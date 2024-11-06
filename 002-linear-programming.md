@@ -48,3 +48,46 @@
         -     y >= 0
 
 ### Graphical Solution
+
+### Simplex algorithm
+
+Start with any one of the solution within feasible region, then change one variable one at a time to optimise objective function. Each iteration select changing varialbe according to greatest rate of change in terms of objective function.
+
+```
+Max 
+    3x + 5y
+
+s.t. 
+    x       <= 4 
+    2y      <= 12
+    3x+2y   <= 18
+    x,y     >= 0
+```
+
+1) Adding slack variable to change inequalities to equalities and construct initial tableau
+```
+Max 
+    P - 3x - 5y + 0a + 0b + 0c = 0
+s.t. 
+    x     + a = 4 
+    2y    + b = 12
+    3x+2y + c = 18
+
+    x,y,a,b,c >= 0
+
+```
+| var | x   | y   | a   | b   | c   | value | R   |
+| :-- | :-- | :-- | :-- | :-- | :-- | :---- | :-- |
+| a   | 1   | 0   | 1   | 0   | 0   | 4     | R_1 |
+| b   | 0   | 2   | 0   | 1   | 0   | 12    | R_2 |
+| c   | 3   | 2   | 0   | 0   | 1   | 18    | R_3 |
+| P   | -3  | -5  | 0   | 0   | 0   | 0     | R_4 |
+
+2) Find the most negative value in objective function (y) as pivot column and calcualte theta (value/pivot col)
+
+| var | x   | y   | a   | b   | c   | value | R   | theta     |
+| :-- | :-- | :-- | :-- | :-- | :-- | :---- | :-- | --------- |
+| a   | 1   | 0   | 1   | 0   | 0   | 4     | R_1 | 4/0 = inf |
+| b   | 0   | 2   | 0   | 1   | 0   | 12    | R_2 | 12/2=6    |
+| c   | 3   | 2   | 0   | 0   | 1   | 18    | R_3 | 18/2=9    |
+| P   | -3  | -5  | 0   | 0   | 0   | 0     | R_4 | 0/-5=0    |
