@@ -118,7 +118,7 @@ s.t.
 | 3   | [2]   | 0   | 0   | 1   | 0   | 18    | R_3 |
 | -3  | [-5]  | 0   | 0   | 0   | 1   | 0     | R_4 |
 
-3) Find the pivot row by calcualting theta (value/pivot col) and choose the row with smallest theata
+3) Find the pivot row by calcualting theta (value/pivot col) and choose the row with smallest theta
 
 | x   | [y]  | a   | b   | c   | P   | value | R   | theta     |
 | :-- | :--- | :-- | :-- | :-- | --- | :---- | :-- | --------- |
@@ -127,7 +127,7 @@ s.t.
 | 3   | [2]  | 0   | 0   | 1   | 0   | 18    | R_3 | 18/2=9    |
 | -3  | [-5] | 0   | 0   | 0   | 1   | 0     | R_4 |           |
 
-4) Make every row excep pivot row in pivot column 0 by performing operations
+4) Make every row excep pivot row in pivot column "0" by performing operations
 
 R_2 -> R_2 / pivot_element
 
