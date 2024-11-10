@@ -4,22 +4,26 @@
 - Address a general management problem
     - Allocate **limited resources** among **competing activities** in an **optimal** way
 
-
-## Linear Programming formulation
-
-- Decision variables
-- Objective function
-- Constraints
-
 ## Terminology
 
-- Variables
+[Linear Programming]
+- Formulation
+    - Decision variables
+    - Objective function
+    - Constraints
+- Variables 
     - Non-basic variables : Decision variables (x, y, x_1, x_n, etc)
     - Basic variable : slack variables (s_1, s_2, etc)
 - Standard form
     - Objective function to be maximized
     - All constraints are inequalities with a "<=" sign
     - Non-negative variables
+
+[Matrix]
+- Row operation 
+    - Swapping two rows,
+    - Multiplying a row by a nonzero number,
+    - Adding a multiple of one row to another row.
 
 ## Example
 
@@ -201,7 +205,7 @@ R_4 -> R_4 + 3*R_3
 | [0]   | 0   | 1   | 1/3    | -1/3  | 0   | 2     | R_1 |       |
 | [0]   | 1   | 0   | 1/2    | 0     | 0   | 6     | R_2 |       |
 | [1]   | [0] | [0] | [-1/3] | [1/3] | [0] | [2]   | R_3 |       |
-| ([0]) | (0) | (0) | (7/2)  | (1)   | (1) | (36)  | R_4 |       |
+| ([0]) | (0) | (0) | (3/2)  | (1)   | (1) | (36)  | R_4 |       |
 
 6) Obtain result with final tableau, ignoring slack variables
 
