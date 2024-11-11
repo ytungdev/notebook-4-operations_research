@@ -78,8 +78,12 @@
 
 #### Execution
 
+> See simplex-algo.py
+
 - Convert problem into standard form.
 - Construct initial tableau
+
+
 
 
 
