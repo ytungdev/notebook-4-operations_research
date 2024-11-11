@@ -1,28 +1,9 @@
 '''
-max
-    P = 20a + 10b
-s.t
-    a + b <= 40
-    4a + b <= 100
-    a,b >= 0
 
-    a   +   b   +   i   = 40
-    4a  +   b   +   j   = 100
-    -20a -10b   +   P   = 0
+## Input format
 
-    
-    
-tableau
-    [a, b, i, j, P, v]
 
-    
-    tbl = [
-        [1,1,1,0,0,40],
-        [4,1,0,1,0,100],
-        [-20,-10,0,0,1,0]
-    ]
-
----------------------------------------------
+#### Equation
 
 Max 
     P - 3x - 5y + 0a + 0b + 0c = 0
@@ -33,6 +14,8 @@ s.t.
 
     x,y,a,b,c >= 0
 
+#### Tableau
+
 | x   | y   | a   | b   | c   | P   | value | R   |
 | :-- | :-- | :-- | :-- | :-- | --- | :---- | :-- |
 | 1   | 0   | 1   | 0   | 0   | 0   | 4     | R_1 |
@@ -40,21 +23,37 @@ s.t.
 | 3   | 2   | 0   | 0   | 1   | 0   | 18    | R_3 |
 | -3  | -5  | 0   | 0   | 0   | 1   | 0     | R_4 |
 
+
+#### Input
+
+var = [x,y,a,b,c,P,val]
+tbl = [
+    [1,0,1,0,0,0,4],
+    [0,2,0,1,0,0,12],
+    [3,2,0,0,1,0,18],
+    [-3,-5,0,0,0,1,0]
+]
+
+OR
+
+var = [x,y,P,val]
+tbl = [
+    [1,0,0,4],
+    [0,2,0,12],
+    [3,2,0,18],
+    [-3,-5,1,0]
+]
 '''
 
 class Simplex:
 
-    var = ['x','y','a','b','c','P','val']
-    tbl = [
-        [1,0,1,0,0,0,4],
-        [0,2,0,1,0,0,12],
-        [3,2,0,0,1,0,18],
-        [-3,-5,0,0,0,1,0]
-    ]
-
-    theta = [0 for i in tbl[:-1]]
-
-    pivot_c,pivot_r = 0,0
+    def __init__(self, tbl) -> None:
+        self.tbl = tbl
+        self.theta = [0 for i in tbl[:-1]]
+        self.pivot_c = None
+        self.pivot_r = None
+        self.final_tbl = None
+        self.result = (None, None, None)
 
     def find_pivot_c(self):
         max_c = 0
@@ -95,7 +94,7 @@ class Simplex:
         
 
 
-    def solve(self):
+    def solve(self)->None:
         while min(self.tbl[-1][0:2]) < 0:
             self.find_pivot_c()
             self.find_pivot_r()
@@ -128,10 +127,26 @@ class Simplex:
         print(*self.final_tbl, sep='\n')
 
         print(f'P is maximiseed at {P} when x={x} and y={y}')
-        result = (x,y,P)
+        result = (P,x,y)
         self.result = result
         return result
 
 if __name__ == '__main__':
-    s = Simplex()
+    
+    var1 = ['x','y','a','b','c','P','val']
+    tbl1 = [
+        [1,0,1,0,0,0,4],
+        [0,2,0,1,0,0,12],
+        [3,2,0,0,1,0,18],
+        [-3,-5,0,0,0,1,0]
+    ]
+
+    var2 = ['x','y','P','val']
+    tbl2 = [
+        [1,1.5,0,750],
+        [2,3,0,1500],
+        [2,1,0,1000],
+        [-50,-40,1,0]
+    ]
+    s = Simplex(tbl2)
     s.solve()
