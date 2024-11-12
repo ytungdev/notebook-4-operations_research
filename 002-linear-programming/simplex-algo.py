@@ -47,9 +47,10 @@ tbl = [
 
 class Simplex:
 
-    def __init__(self, tbl) -> None:
-        self.tbl = tbl
-        self.theta = [0 for i in tbl[:-1]]
+    def __init__(self, inp_tbl) -> None:
+        self.init_tbl = [r[:] for r in inp_tbl] # Pass by value
+        self.tbl = inp_tbl
+        self.theta = [0 for i in inp_tbl[:-1]]
         self.pivot_c = None
         self.pivot_r = None
         self.final_tbl = None
@@ -57,7 +58,7 @@ class Simplex:
 
     def find_pivot_c(self):
         max_c = 0
-        for i in range(len(self.tbl[-1])):
+        for i in range(len(self.tbl[-1][:-1])):
             if self.tbl[-1][i] >= 0:
                 continue
             else:
@@ -72,7 +73,7 @@ class Simplex:
                 self.theta[i] = float('inf')
             else:
                 self.theta[i] = float(self.tbl[i][-1]) / self.tbl[i][self.pivot_c]
-        self.pivot_r = self.theta.index(min(self.theta))
+        self.pivot_r = self.theta.index(min([x for x in self.theta if x >= 0]))
         return self.pivot_r
     
     def row_operation(self):
@@ -93,12 +94,33 @@ class Simplex:
                 self.tbl[i][j] = self.tbl[i][j] - multi * self.tbl[self.pivot_r][j]
         
 
+    def check_unbound(self):
+        # unbound if no +ve int in pivot_c
+        for r in self.tbl:
+            if r[self.pivot_c] >= 0:
+                return False
+        return True
+    
+    def check_infeasible(self):
+        if None in self.result:
+            return True
+        if min(self.result) >= 0:
+            return False
+        return True
 
     def solve(self)->None:
+        # Check for improvability and end condition (unbound)
         while min(self.tbl[-1][0:2]) < 0:
             self.find_pivot_c()
+            if self.check_unbound():
+                print("Profit P is unbounded")
+                return self.result
+            if self.infeasible:
+                print("Profit P is infeasible")
+                return self.result
             self.find_pivot_r()
-            self.row_operation()
+            self.row_operation()       
+
         
         final_tbl = []
         for i in range(len(self.tbl)):
@@ -120,15 +142,20 @@ class Simplex:
             if r[0] == 0 and r[1] == 0 and r[2] == 1:
                 P = r[-1]
 
+        result = (P,x,y)
+        self.result = result
+        
+        if self.check_infeasible():
+            print("Profit P is infeasible")
+            return self.result
+
         print('Initial tableau :')
-        print(*self.tbl, sep='\n')
+        print(*self.init_tbl, sep='\n')
 
         print('Final tableau :')
         print(*self.final_tbl, sep='\n')
 
         print(f'P is maximiseed at {P} when x={x} and y={y}')
-        result = (P,x,y)
-        self.result = result
         return result
 
 if __name__ == '__main__':
@@ -143,10 +170,22 @@ if __name__ == '__main__':
 
     var2 = ['x','y','P','val']
     tbl2 = [
-        [1,1.5,0,750],
-        [2,3,0,1500],
-        [2,1,0,1000],
+        [-2,3,0,15],
+        [2,3,0,15],
+        [2,1,0,10],
         [-50,-40,1,0]
+    ]
+
+    tbl_unbound = [
+        [1,-1,0,1],
+        [-2,-1,0,-6],
+        [-2,1,1,0]
+    ]
+
+    tbl_infeasible = [
+        [1,1,0,1],
+        [0,-1,0,-2],
+        [-2,-1,1,0]
     ]
     s = Simplex(tbl2)
     s.solve()
