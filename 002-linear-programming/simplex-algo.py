@@ -107,16 +107,18 @@ class Simplex:
         if min(self.result) >= 0:
             return False
         return True
+    
+    def check_improvability(self):
+        if min(self.tbl[-1][:-1]) < 0:
+            return True
+        return False
 
     def solve(self)->None:
         # Check for improvability and end condition (unbound)
-        while min(self.tbl[-1][0:2]) < 0:
+        while self.check_improvability():
             self.find_pivot_c()
             if self.check_unbound():
                 print("Profit P is unbounded")
-                return self.result
-            if self.infeasible:
-                print("Profit P is infeasible")
                 return self.result
             self.find_pivot_r()
             self.row_operation()       
@@ -160,7 +162,7 @@ class Simplex:
 
 if __name__ == '__main__':
     
-    var1 = ['x','y','a','b','c','P','val']
+    # ['x','y','a','b','c','P','val']
     tbl1 = [
         [1,0,1,0,0,0,4],
         [0,2,0,1,0,0,12],
@@ -168,9 +170,15 @@ if __name__ == '__main__':
         [-3,-5,0,0,0,1,0]
     ]
 
-    var2 = ['x','y','P','val']
+    # ['x','y','P','val']
     tbl2 = [
         [-2,3,0,15],
+        [2,3,0,15],
+        [2,1,0,10],
+        [-50,-40,1,0]
+    ]
+    tbl3 = [
+        [2,3,0,15],
         [2,3,0,15],
         [2,1,0,10],
         [-50,-40,1,0]
@@ -187,5 +195,8 @@ if __name__ == '__main__':
         [0,-1,0,-2],
         [-2,-1,1,0]
     ]
-    s = Simplex(tbl2)
-    s.solve()
+
+    tests = [tbl1, tbl2, tbl3, tbl_unbound, tbl_infeasible]
+    for t in tests:
+        s = Simplex(t)
+        s.solve()
